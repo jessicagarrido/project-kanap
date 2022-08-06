@@ -29,3 +29,26 @@ cart.forEach(function (item) {
             </div>
         </article>
         `;
+
+        // Suppression d'un élément du panier
+        document.querySelectorAll('.deleteItem').forEach(function(canap) {
+          canap.addEventListener('click', function() {
+            let id = canap.closest('article').getAttribute('data-id')
+            let color = canap.closest('article').getAttribute('data-color')
+
+            let oldCart = JSON.parse(localStorage.getItem("panier"))
+            let newCart = []
+
+            oldCart.forEach(function(element) {
+              if(element.id == id && element.color == color) {
+
+              } else {
+                newCart.push(element)
+              }
+            })
+
+            localStorage.setItem('panier', JSON.stringify(newCart))
+            canap.closest('article').remove()
+            refreshPriceAndQtt()
+          }) 
+        })
