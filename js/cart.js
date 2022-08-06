@@ -52,3 +52,27 @@ cart.forEach(function (item) {
             refreshPriceAndQtt()
           }) 
         })
+
+        // Modification d'un élément du panier
+        document.querySelectorAll('.itemQuantity').forEach(function(canap) {
+          canap.addEventListener('change', function() {
+            let id = canap.closest('article').getAttribute('data-id')
+            let color = canap.closest('article').getAttribute('data-color')
+
+            let oldCart = JSON.parse(localStorage.getItem("panier"))
+            let newCart = []
+
+            oldCart.forEach(function(element) {
+              if(element.id == id && element.color == color) {
+                element.qtt = Number(canap.value)
+              } 
+              newCart.push(element)
+            })
+
+            localStorage.setItem('panier', JSON.stringify(newCart))
+            refreshPriceAndQtt()
+          }) 
+        })
+
+    });
+});
