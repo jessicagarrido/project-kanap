@@ -20,3 +20,4 @@ fetch("http://localhost:3000/api/products") // Permet de se connecter à l'API
 .catch((error) => {
     console.log(error)
 })
+

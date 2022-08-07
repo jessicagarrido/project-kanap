@@ -1,4 +1,5 @@
 const cart = JSON.parse(localStorage.getItem("panier")); // On récupère le panier depuis le localStorage
+refreshPriceAndQtt()
 
 cart.forEach(function (item) {
   fetch(`http://localhost:3000/api/products/${item.id}`)
@@ -76,3 +77,27 @@ cart.forEach(function (item) {
 
     });
 });
+
+function refreshPriceAndQtt() {
+  
+  let panier = JSON.parse(localStorage.getItem("panier"))
+
+  let qtt = document.querySelector('#totalQuantity')
+  let price = document.querySelector('#totalPrice')
+
+  qtt.textContent = 0 // Affichage du nombre d'article
+  price.textContent = 0  // Affichage du prix total
+
+  panier.forEach(function (item) {
+    fetch(`http://localhost:3000/api/products/${item.id}`)
+    .then(response => response.json())
+    .then(function (kanap) {
+      // Modification de la quantité
+      qtt.textContent = Number(qtt.textContent) + item.qtt
+
+      // Modification du prix total
+      price.textContent = Number(price.textContent) + (item.qtt*kanap.price)
+    })
+  })
+
+}
