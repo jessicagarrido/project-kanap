@@ -1,5 +1,6 @@
 const cart = JSON.parse(localStorage.getItem("panier")); // On récupère le panier depuis le localStorage
-refreshPriceAndQtt()
+if(cart != null) {
+  refreshPriceAndQtt()
 
 cart.forEach(function (item) {
   fetch(`http://localhost:3000/api/products/${item.id}`)
@@ -77,6 +78,7 @@ cart.forEach(function (item) {
 
     });
 });
+}
 
 function refreshPriceAndQtt() {
   
@@ -88,16 +90,90 @@ function refreshPriceAndQtt() {
   qtt.textContent = 0 // Affichage du nombre d'article
   price.textContent = 0  // Affichage du prix total
 
-  panier.forEach(function (item) {
-    fetch(`http://localhost:3000/api/products/${item.id}`)
-    .then(response => response.json())
-    .then(function (kanap) {
-      // Modification de la quantité
-      qtt.textContent = Number(qtt.textContent) + item.qtt
-
-      // Modification du prix total
-      price.textContent = Number(price.textContent) + (item.qtt*kanap.price)
+    panier.forEach(function (item) {
+      fetch(`http://localhost:3000/api/products/${item.id}`)
+      .then(response => response.json())
+      .then(function (kanap) {
+        // Modification de la quantité
+        qtt.textContent = Number(qtt.textContent) + item.qtt
+  
+        // Modification du prix total
+        price.textContent = Number(price.textContent) + (item.qtt*kanap.price)
+      })
     })
-  })
 
 }
+
+// Bloquer l'envoi du formulaire par défault
+document.querySelector('.cart__order__form').addEventListener('submit', function(event) {
+  event.preventDefault()
+})
+
+document.querySelector('#order').addEventListener('click', function() {
+  let form = document.querySelector('.cart__order__form')
+  
+  let user = {
+    firstName: form.firstName.value,
+    lastName: form.lastName.value,
+    address: form.address.value,
+    city: form.city.value,
+    email: form.email.value
+  }
+
+  //REGEXP
+  let RegExpName = /^[a-zA-Z ]*$/ // Pour prénom, nom et ville
+  let RegExpAddress = /^\s*\S+(?:\s+\S+){2}/ // Pour adresse
+  let RegExpEmail = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6})*$/ // Pour E-mail
+  let permission = true
+
+  if(user.firstName == '') {
+    document.querySelector('#firstNameErrorMsg').textContent = 'Veuillez renseigner ce champs'
+    permission = false
+  } else if (!RegExpName.test(user.firstName)) {
+    document.querySelector('#firstNameErrorMsg').textContent = 'Veuillez renseigner correctement ce champs'
+    permission = false
+  } else {
+    document.querySelector('#firstNameErrorMsg').textContent = ''
+  }
+
+  if(user.lastName == '') {
+    document.querySelector('#lastNameErrorMsg').textContent = 'Veuillez renseigner ce champs'
+    permission = false
+  } else if (!RegExpName.test(user.lastName)) {
+    document.querySelector('#lastNameErrorMsg').textContent = 'Veuillez renseigner correctement ce champs'
+    permission = false
+  } else {
+    document.querySelector('#lastNameErrorMsg').textContent = ''
+  }
+
+  if(user.address == '') {
+    document.querySelector('#addressErrorMsg').textContent = 'Veuillez renseigner ce champs'
+    permission = false
+  } else if (!RegExpAddress.test(user.address)) {
+    document.querySelector('#addressErrorMsg').textContent = 'Veuillez renseigner correctement ce champs'
+    permission = false
+  } else {
+    document.querySelector('#addressErrorMsg').textContent = ''
+  }
+
+  if(user.city == '') {
+    document.querySelector('#cityErrorMsg').textContent = 'Veuillez renseigner ce champs'
+    permission = false
+  } else if (!RegExpName.test(user.city)) {
+    document.querySelector('#cityErrorMsg').textContent = 'Veuillez renseigner correctement ce champs'
+    permission = false
+  } else {
+    document.querySelector('#cityErrorMsg').textContent = ''
+  }
+
+  if(user.email == '') {
+    document.querySelector('#emailErrorMsg').textContent = 'Veuillez renseigner ce champs'
+    permission = false
+  } else if (!RegExpEmail.test(user.email)) {
+    document.querySelector('#emailErrorMsg').textContent = 'Veuillez renseigner correctement ce champs'
+    permission = false
+  } else {
+    document.querySelector('#emailErrorMsg').textContent = ''
+  }
+
+  
