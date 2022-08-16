@@ -23,21 +23,19 @@ fetch(`http://localhost:3000/api/products/${productId}`)
 document.querySelector('#addToCart').addEventListener('click', () => { // On a séléctionné l'id pour lui ajouter un évènement dessus
 
     
-    let product = { // On crée une variable qui va stocker les informations saisies par l'utilisateur
+    let product = { // Création d'une variable qui va stocker les informations saisies par l'utilisateur
         id: productId,
         color: document.querySelector('#colors').value,
         qtt: Number(document.querySelector('#quantity').value),
     }
 
     // condition ? true : false
-    // Ici je ne comprends pas ce qu'on a fait ...
-    
-    let panier = JSON.parse(localStorage.getItem('panier')) == null ? [] : JSON.parse(localStorage.getItem('panier')) // ??
-    let newPanier = [] // On crée une variable contenant un tableau vide
-    let isProductInTheCart = false // ??
 
-    // Ici je voudrais que l'image du produit choisi ainsi que ses informations
-    //s'affichent dans la page panier 
+    let panier = JSON.parse(localStorage.getItem('panier')) == null ? [] : JSON.parse(localStorage.getItem('panier')) // ??
+    let newPanier = [] // Création d'une variable contenant un tableau vide
+    let isProductInTheCart = false 
+
+    //Affichage de l'image et informations dans le panier
 
     let img = document.querySelector(".item__img") 
 
@@ -48,7 +46,7 @@ document.querySelector('#addToCart').addEventListener('click', () => { // On a s
                 item.qtt += product.qtt
                 isProductInTheCart = true
             }
-            newPanier.push(item) //On ajoute le tableau vide (qui maintenant est rempli par item?)
+            newPanier.push(item) // Ajout du tableau vide
         });
         
         if(JSON.parse(localStorage.getItem('panier')) == null || isProductInTheCart == false) {

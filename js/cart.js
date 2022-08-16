@@ -176,4 +176,39 @@ document.querySelector('#order').addEventListener('click', function() {
     document.querySelector('#emailErrorMsg').textContent = ''
   }
 
-  
+  // SOUMISSION DU FORMULAIRE
+
+
+  if(permission) {
+
+    let cart = JSON.parse(localStorage.getItem("panier"))
+    let products = []
+
+    cart.forEach(kanap => {
+      products.push(kanap.id)
+    })
+
+    if(products.length != 0) {
+      fetch('http://localhost:3000/api/products/order', { 
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            contact: user,
+            products: products
+          })
+        })
+        .then((response) => response.json())
+        .then((data) => {
+          localStorage.clear()
+          document.location.href = 'confirmation.html?orderId=' + data.orderId
+        })
+        .catch(error => console.log(error))
+      }
+    } else {
+      alert('Ajouter un produit à votre panier avant de soumettre votre commande !')
+    }
+    
+})
