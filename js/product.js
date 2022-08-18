@@ -31,15 +31,18 @@ document.querySelector('#addToCart').addEventListener('click', () => { // On a s
 
     // condition ? true : false
 
-    let panier = JSON.parse(localStorage.getItem('panier')) == null ? [] : JSON.parse(localStorage.getItem('panier'))
+    let panier = JSON.parse(localStorage.getItem('panier')) == null ? [] : JSON.parse(localStorage.getItem('panier')) // ??
     let newPanier = [] // Création d'une variable contenant un tableau vide
     let isProductInTheCart = false 
 
     //Affichage de l'image et informations dans le panier
 
     let img = document.querySelector(".item__img") 
+    if(product.qtt < 0 || product.qtt > 100) {
+        alert("Veuillez entrez une quantité entre 0 et 100");
+    }
+    else if(product.color != '' && product.qtt > 0) { // si la couleur ou quantité n'est pas saisie
 
-    if(product.color != '' && product.qtt > 0) { // si la couleur ou quantité n'est pas saisie
         panier.forEach(item => { // on exécute une fonction pour chaque élément du produit
             if(item.id == product.id && item.color == product.color) {
                 item.qtt += product.qtt
