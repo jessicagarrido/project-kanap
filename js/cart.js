@@ -65,8 +65,13 @@ cart.forEach(function (item) {
             let newCart = []
 
             oldCart.forEach(function(element) {
-              if(element.id == id && element.color == color) {
-                element.qtt = Number(canap.value)
+              if(element.id == id && element.color == color) { 
+                if(Number(canap.value) < 0 || Number(canap.value) > 100) {
+                  element.qtt = element.qtt
+                  canap.value = element.qtt
+                  alert("Veuillez entrez une quantité entre 0 et 100");
+                } else {
+                  element.qtt = Number(canap.value)}
               } 
               newCart.push(element)
             })
